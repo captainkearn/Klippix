@@ -29,8 +29,8 @@ git clone https://github.com/captainkearn/Klippix.git
 cd Klippix
 ```
 
-Because the repository is currently private, GitHub will require an account
-with access and authenticated Git credentials.
+The repository is public, so cloning it over HTTPS does not require a GitHub
+account or authenticated Git credentials.
 
 ## Development
 
