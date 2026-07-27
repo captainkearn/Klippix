@@ -20,6 +20,18 @@ The packaged terminal connects to the LAN-only ttyd service. The filesystem
 still uses sample in-browser data; a later restricted API will connect it to
 printer configuration files.
 
+## Clone the repository
+
+Clone Klippix over HTTPS and enter the project directory:
+
+```bash
+git clone https://github.com/captainkearn/Klippix.git
+cd Klippix
+```
+
+Because the repository is currently private, GitHub will require an account
+with access and authenticated Git credentials.
+
 ## Development
 
 ```bash
