@@ -1,0 +1,29 @@
+[Unit]
+Description=Klippix browser terminal
+Documentation=https://github.com/tsl0922/ttyd
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/libexec/klippix/ttyd \
+    --interface 127.0.0.1 \
+    --port 8021 \
+    --writable \
+    --check-origin \
+    --base-path /terminal \
+    --max-clients 4 \
+    --terminal-type xterm-256color \
+    /bin/login
+Restart=on-failure
+RestartSec=3s
+
+# /bin/login must be able to authenticate and switch to the selected local user.
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

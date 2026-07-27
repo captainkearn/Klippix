@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.vite/
+artifacts/
+vendor/ttyd/
+debian/.debhelper/
+debian/klippix/
+debian/debhelper-build-stamp
+debian/files
+debian/*.debhelper
+debian/*.substvars
+*.log
+.DS_Store

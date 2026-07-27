@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+if [ "$1" = "remove" ] || [ "$1" = "deconfigure" ]; then
+    if [ -L /etc/nginx/sites-enabled/klippix.conf ]; then
+        rm /etc/nginx/sites-enabled/klippix.conf
+    fi
+    if command -v nginx >/dev/null 2>&1 && nginx -t >/dev/null 2>&1; then
+        invoke-rc.d nginx reload || true
+    fi
+fi
+
+exit 0

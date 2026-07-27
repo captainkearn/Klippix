@@ -1,0 +1,49 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    configure)
+        install -d -m 0750 -o root -g www-data /etc/klippix
+        install -d -m 0755 /usr/share/klippix/web
+        install -d -m 0755 /var/lib/klippix
+
+        if [ ! -s /etc/klippix/htpasswd ]; then
+            password="$(openssl rand -base64 24 | tr -d '/+=' | cut -c1-24)"
+            printf '%s\n' "$password" >/etc/klippix/initial-password
+            chmod 0600 /etc/klippix/initial-password
+            htpasswd -bcB /etc/klippix/htpasswd klippix "$password" >/dev/null
+        fi
+
+        chown root:www-data /etc/klippix/htpasswd
+        chmod 0640 /etc/klippix/htpasswd
+
+        if [ ! -L /etc/nginx/sites-enabled/klippix.conf ]; then
+            ln -s /etc/nginx/sites-available/klippix.conf \
+                /etc/nginx/sites-enabled/klippix.conf
+        fi
+
+        nginx -t
+        ;;
+esac
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+        if [ -d /run/systemd/system ]; then
+            deb-systemd-invoke restart nginx.service >/dev/null || true
+        else
+            invoke-rc.d nginx restart || true
+        fi
+
+        echo
+        echo "Klippix is available on TCP port 8020."
+        echo "Web username: klippix"
+        if [ -s /etc/klippix/initial-password ]; then
+            echo "Initial password: $(cat /etc/klippix/initial-password)"
+            echo "The password is also stored in /etc/klippix/initial-password."
+        fi
+        ;;
+esac
+
+exit 0

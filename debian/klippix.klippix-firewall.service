@@ -1,0 +1,24 @@
+[Unit]
+Description=Klippix LAN-only firewall rules
+Documentation=man:nft(8)
+Before=nginx.service klippix-terminal.service
+After=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/libexec/klippix/load-firewall
+ExecReload=/usr/libexec/klippix/load-firewall
+ExecStop=-/usr/sbin/nft delete table inet klippix
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictRealtime=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

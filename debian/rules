@@ -1,0 +1,27 @@
+#!/usr/bin/make -f
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	npm ci --ignore-scripts
+	npm run build
+	test -x vendor/ttyd/ttyd
+
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf dist
+
+override_dh_installsystemd:
+	dh_installsystemd --name=klippix-firewall
+	dh_installsystemd --name=klippix-terminal
+
+# ttyd is an upstream, checksum-pinned static release binary and is already
+# stripped. Avoid requiring cross-binutils merely to re-strip it.
+override_dh_dwz:
+
+override_dh_strip:
+
+override_dh_makeshlibs:
+
+override_dh_shlibdeps:

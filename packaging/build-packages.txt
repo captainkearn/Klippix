@@ -1,0 +1,14 @@
+# Debian package and frontend build toolchain.
+build-essential
+debhelper-compat
+devscripts
+dpkg-dev
+fakeroot
+lintian
+nodejs
+npm
+
+# Planned klippixd backend build dependencies.
+golang-go
+libpam0g-dev
+pkg-config

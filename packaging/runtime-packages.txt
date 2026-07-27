@@ -1,0 +1,18 @@
+# Packages installed on the target Debian-family system.
+nginx-light
+nftables
+login
+libpam-runtime
+ca-certificates
+git
+sudo
+curl
+avahi-daemon
+
+# Used initially to create /etc/klippix/htpasswd for Nginx Basic Auth.
+apache2-utils
+openssl
+iproute2
+
+# ttyd 1.7.7 is bundled in the architecture-specific Klippix package because
+# Debian 12 and Debian 13 do not currently provide it in their main repositories.

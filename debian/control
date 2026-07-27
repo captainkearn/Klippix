@@ -1,0 +1,34 @@
+Source: klippix
+Section: admin
+Priority: optional
+Maintainer: Klippix Maintainers <maintainers@klippix.org>
+Build-Depends:
+ debhelper-compat (= 13),
+ nodejs:native,
+ npm:native,
+Standards-Version: 4.7.2.0
+Rules-Requires-Root: no
+Homepage: https://github.com/klippix/klippix
+
+Package: klippix
+Architecture: any
+Depends:
+ ${misc:Depends},
+ apache2-utils,
+ avahi-daemon,
+ ca-certificates,
+ curl,
+ git,
+ iproute2,
+ libpam-modules,
+ libpam-runtime,
+ login,
+ nftables,
+ nginx-light | nginx,
+ openssl,
+ sudo,
+ systemd-sysv | systemd,
+Description: guided LAN-only browser workspace for Klipper hosts
+ Klippix provides a browser terminal, guided KIAUH installation instructions,
+ and a printer-focused file manager shell for Debian-family Klipper hosts.
+ Klipper and related printer services remain explicitly user-installed.

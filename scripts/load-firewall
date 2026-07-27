@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+NFT=/usr/sbin/nft
+RULESET=/etc/klippix/klippix.nft
+
+if "$NFT" list table inet klippix >/dev/null 2>&1; then
+    "$NFT" delete table inet klippix
+fi
+
+"$NFT" --check --file "$RULESET"
+"$NFT" --file "$RULESET"

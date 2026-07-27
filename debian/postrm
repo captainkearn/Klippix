@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+#DEBHELPER#
+
+if [ "$1" = "purge" ]; then
+    rm -f /etc/klippix/htpasswd /etc/klippix/initial-password
+    rmdir /etc/klippix 2>/dev/null || true
+    rm -rf /var/lib/klippix
+fi
+
+exit 0

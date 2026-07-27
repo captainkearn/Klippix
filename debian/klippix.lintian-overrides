@@ -1,0 +1,5 @@
+# Debian 12 and 13 do not ship ttyd. Klippix bundles the upstream 1.7.7 static
+# release for supported architectures and verifies its published SHA-256 hash
+# before every package build.
+klippix: embedded-library zlib [usr/libexec/klippix/ttyd]
+klippix: statically-linked-binary [usr/libexec/klippix/ttyd]

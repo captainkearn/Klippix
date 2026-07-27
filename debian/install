@@ -1,0 +1,6 @@
+dist/* usr/share/klippix/web/
+vendor/ttyd/ttyd usr/libexec/klippix/
+deploy/nginx/klippix.conf etc/nginx/sites-available/
+deploy/nftables/klippix.nft etc/klippix/
+scripts/load-firewall usr/libexec/klippix/
+scripts/klippix-reset-password usr/sbin/
