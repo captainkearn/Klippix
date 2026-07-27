@@ -1,5 +1,7 @@
-klippix (0.1.0) unstable; urgency=medium
+klippix (0.510~beta1) unstable; urgency=medium
 
-  * Initial Debian package for the Klippix guided browser workspace.
+  * Publish the .510 BETA package.
+  * Connect the GUI to the live browser terminal.
+  * Add amd64, arm64, and armhf package builds.
 
  -- Klippix Maintainers <maintainers@klippix.org>  Sun, 26 Jul 2026 08:45:00 -0600

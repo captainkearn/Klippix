@@ -15,7 +15,7 @@ export function Statusbar() {
         <ShieldCheck size={14} />
         System healthy
       </span>
-      <span>Klippix 0.1.0</span>
+      <span>Klippix .510 BETA</span>
     </footer>
   );
 }

@@ -1,7 +1,15 @@
 # Klippix
 
+> **Klippix .510 BETA**
+
 Klippix is a browser-based setup workspace for Debian-family Klipper hosts. The
-current repository contains the first interactive GUI prototype:
+current beta contains the first interactive GUI and package installer:
+
+## GUI preview
+
+![Klippix .510 BETA terminal and guided KIAUH installer](./docs/screenshots/klippix-terminal-0510-beta.png)
+
+![Klippix .510 BETA printer configuration file manager](./docs/screenshots/klippix-files-0510-beta.png)
 
 - A guided KIAUH installation checklist
 - An authenticated browser terminal backed by a local `/bin/login` session
@@ -54,7 +62,7 @@ scripts/build-deb.sh armhf
 Install a local build on a supported Debian-family host:
 
 ```bash
-sudo installer/install.sh --deb artifacts/klippix_0.1.0_amd64.deb
+sudo installer/install.sh --deb 'artifacts/klippix_0.510~beta1_amd64.deb'
 ```
 
 Use the package matching `dpkg --print-architecture`: `amd64` for x86-64,

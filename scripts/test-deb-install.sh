@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-PACKAGE_PATH=${1:-/packages/klippix_0.1.0_amd64.deb}
+PACKAGE_PATH=${1:-/packages/klippix_0.510~beta1_amd64.deb}
 
 if [ "$(id -u)" -ne 0 ]; then
     echo "This test must run as root inside a disposable Debian environment." >&2
