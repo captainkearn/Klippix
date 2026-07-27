@@ -1,4 +1,5 @@
-import { LockKeyhole, Network, ShieldCheck } from "lucide-react";
+import { FlaskConical, LockKeyhole, Network, Shield } from "lucide-react";
+import { releaseLabel } from "../release";
 
 export function Statusbar() {
   return (
@@ -9,13 +10,16 @@ export function Statusbar() {
       </span>
       <span>
         <Network size={14} />
-        LAN access
+        Port 8020
       </span>
-      <span className="status-healthy">
-        <ShieldCheck size={14} />
-        System healthy
+      <span>
+        <Shield size={14} />
+        LAN restricted
       </span>
-      <span>Klippix .510 BETA</span>
+      <span className="beta-status">
+        <FlaskConical size={14} />
+        {releaseLabel}
+      </span>
     </footer>
   );
 }

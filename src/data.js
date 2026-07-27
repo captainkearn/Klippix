@@ -1,16 +1,17 @@
 export const guideSteps = [
   {
+    id: "welcome-security",
     title: "Welcome & security",
-    shortTitle: "Welcome",
-    status: "complete",
+    workspace: "terminal",
     description:
       "Confirm that Klippix is available only on your trusted local network, then change the default account password.",
     path: "passwd",
     command: "passwd"
   },
   {
+    id: "install-kiauh",
     title: "Install KIAUH",
-    status: "complete",
+    workspace: "terminal",
     description:
       "KIAUH is a menu-driven installer for Klipper and its related services. Install it once, then use it for every component.",
     path: "Download → make executable → launch",
@@ -18,51 +19,64 @@ export const guideSteps = [
       "cd ~ && git clone https://github.com/dw-0/kiauh.git && ./kiauh/kiauh.sh"
   },
   {
+    id: "install-klipper",
     title: "Install Klipper",
-    status: "current",
+    workspace: "terminal",
     description:
       "Klipper runs the printer firmware and coordinates motion. Use the KIAUH installer from your terminal.",
     path: "KIAUH → Install → Klipper",
     command: "cd ~/kiauh && ./kiauh.sh"
   },
   {
+    id: "install-moonraker",
     title: "Install Moonraker",
+    workspace: "terminal",
     description:
       "Moonraker connects Klipper to browser interfaces and other network clients.",
     path: "KIAUH → Install → Moonraker",
     command: "cd ~/kiauh && ./kiauh.sh"
   },
   {
+    id: "choose-web-interface",
     title: "Choose a web interface",
+    workspace: "terminal",
     description:
       "Install Mainsail, Fluidd, or both. They provide the everyday printer control interface.",
     path: "KIAUH → Install → Mainsail or Fluidd",
     command: "cd ~/kiauh && ./kiauh.sh"
   },
   {
+    id: "install-crowsnest",
     title: "Install Crowsnest",
+    workspace: "terminal",
     description:
       "Crowsnest manages webcams and video streams for your printer.",
     path: "KIAUH → Install → Crowsnest",
     command: "cd ~/kiauh && ./kiauh.sh"
   },
   {
+    id: "install-klipperscreen",
     title: "Install KlipperScreen",
+    workspace: "terminal",
     description:
       "Add a touch-friendly local interface when your controller has a connected display.",
     path: "KIAUH → Install → KlipperScreen",
     command: "cd ~/kiauh && ./kiauh.sh"
   },
   {
+    id: "printer-configuration",
     title: "Add printer configuration",
-    status: "files",
+    workspace: "files",
+    pathLabel: "Location",
     description:
       "Klipper looks for printer configuration in ~/printer_data/config. Upload an existing printer.cfg or edit files directly here.",
     path: "~/printer_data/config",
     command: "mkdir -p ~/printer_data/config"
   },
   {
+    id: "verify-finish",
     title: "Verify & finish",
+    workspace: "terminal",
     description:
       "Check each service, review the logs, and reboot once before connecting to your printer.",
     path: "Review → verify → reboot",

@@ -1,11 +1,7 @@
 import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   File,
   Folder,
-  MoreVertical,
-  Plus,
+  Info,
   Search,
   Upload
 } from "lucide-react";
@@ -49,32 +45,35 @@ export function FileManager({ files, setFiles }) {
     setSavedDraft(draft);
   }
 
-  function uploadFiles(event) {
-    const additions = Array.from(event.target.files ?? []).map((file) => ({
-      name: file.name,
-      type: "file",
-      modified: "Just now",
-      size:
-        file.size < 1024
-          ? `${file.size} B`
-          : `${(file.size / 1024).toFixed(1)} KB`,
-      content: "# Uploaded file preview\n"
-    }));
-    setFiles((current) => [...current, ...additions]);
+  async function uploadFiles(event) {
+    const selectedFiles = Array.from(event.target.files ?? []);
     event.target.value = "";
+
+    const additions = await Promise.all(
+      selectedFiles.map(async (file) => ({
+        name: file.name,
+        type: "file",
+        modified: "Just now",
+        size:
+          file.size < 1024
+            ? `${file.size} B`
+            : `${(file.size / 1024).toFixed(1)} KB`,
+        content: await file.text()
+      }))
+    );
+
+    setFiles((current) => {
+      const merged = new Map(current.map((file) => [file.name, file]));
+      for (const file of additions) merged.set(file.name, file);
+      return Array.from(merged.values());
+    });
+
+    if (additions[0]) selectFile(additions[0]);
   }
 
   return (
     <section className="file-manager">
       <div className="file-toolbar">
-        <div className="nav-buttons" aria-label="File navigation">
-          <button type="button" aria-label="Back">
-            <ChevronLeft size={18} />
-          </button>
-          <button type="button" aria-label="Forward">
-            <ChevronRight size={18} />
-          </button>
-        </div>
         <div className="breadcrumbs" aria-label="Current path">
           <span>Home</span>
           <i>/</i>
@@ -82,12 +81,20 @@ export function FileManager({ files, setFiles }) {
           <i>/</i>
           <strong>config</strong>
         </div>
+        <span
+          className="preview-badge"
+          title="The filesystem backend is not connected in this beta."
+        >
+          <Info size={14} />
+          Preview data
+        </span>
         <label className="search">
           <Search size={17} />
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search files"
+            aria-label="Search preview files"
           />
         </label>
         <input
@@ -103,12 +110,7 @@ export function FileManager({ files, setFiles }) {
           onClick={() => uploadRef.current?.click()}
         >
           <Upload size={16} />
-          Upload
-        </button>
-        <button className="secondary-button new-button" type="button">
-          <Plus size={16} />
-          New
-          <ChevronDown size={14} />
+          Upload to preview
         </button>
       </div>
 
@@ -118,7 +120,6 @@ export function FileManager({ files, setFiles }) {
             <span>Name</span>
             <span>Modified</span>
             <span>Size</span>
-            <span />
           </div>
           <div className="file-rows">
             {visibleFiles.map((file) => (
@@ -140,7 +141,6 @@ export function FileManager({ files, setFiles }) {
                 </span>
                 <span>{file.modified}</span>
                 <span>{file.size}</span>
-                <MoreVertical size={17} />
               </button>
             ))}
             {visibleFiles.length === 0 && (
@@ -148,7 +148,7 @@ export function FileManager({ files, setFiles }) {
             )}
           </div>
           <div className="file-list-footer">
-            <span>{visibleFiles.length} items</span>
+            <span>{visibleFiles.length} preview items</span>
             <span>{selected ? `1 item selected · ${selected.size}` : "No selection"}</span>
           </div>
         </div>
@@ -171,10 +171,7 @@ export function FileManager({ files, setFiles }) {
                   onClick={save}
                   disabled={!dirty}
                 >
-                  Save
-                </button>
-                <button className="icon-button" type="button" aria-label="File options">
-                  <MoreVertical size={17} />
+                  Save preview
                 </button>
               </div>
               <div className="code-editor">
@@ -191,7 +188,7 @@ export function FileManager({ files, setFiles }) {
                 />
               </div>
               <div className="editor-footer">
-                <span>Ln 1, Col 1</span>
+                <span>Changes stay in this browser tab</span>
                 <span>UTF-8</span>
               </div>
             </>

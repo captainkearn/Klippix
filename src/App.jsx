@@ -6,26 +6,38 @@ import { Statusbar } from "./components/Statusbar";
 import { Terminal } from "./components/Terminal";
 import { Topbar } from "./components/Topbar";
 import { guideSteps, initialFiles } from "./data";
+import { useClipboardFeedback } from "./hooks/useClipboardFeedback";
+
+const DEFAULT_STEP_BY_TAB = {
+  terminal: "install-klipper",
+  files: "printer-configuration"
+};
+
+function stepIndexForTab(tab) {
+  const stepId = DEFAULT_STEP_BY_TAB[tab];
+  const index = guideSteps.findIndex((step) => step.id === stepId);
+  return index === -1 ? 0 : index;
+}
 
 function App() {
   const [tab, setTab] = useState("terminal");
-  const [activeStep, setActiveStep] = useState(2);
+  const [activeStep, setActiveStep] = useState(() => stepIndexForTab("terminal"));
   const [guideOpen, setGuideOpen] = useState(true);
-  const [copied, setCopied] = useState(false);
-  const [files, setFiles] = useState(initialFiles);
+  const [files, setFiles] = useState(() => initialFiles);
+  const clipboard = useClipboardFeedback();
 
   function switchTab(nextTab) {
     setTab(nextTab);
-    if (nextTab === "files" && activeStep === 2) setActiveStep(7);
-    if (nextTab === "terminal" && activeStep === 7) setActiveStep(2);
+    if (guideSteps[activeStep]?.workspace !== nextTab) {
+      setActiveStep(stepIndexForTab(nextTab));
+    }
   }
 
-  function copyCommand(command) {
-    navigator.clipboard?.writeText(command).catch(() => {
-      // Clipboard permission can be unavailable on an HTTP-only local network.
-    });
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1600);
+  function selectGuideStep(index) {
+    const step = guideSteps[index];
+    if (!step) return;
+    setActiveStep(index);
+    setTab(step.workspace);
   }
 
   return (
@@ -36,9 +48,9 @@ function App() {
           <Guide
             steps={guideSteps}
             activeStep={activeStep}
-            onSelectStep={setActiveStep}
-            onCopy={copyCommand}
-            copied={copied}
+            onSelectStep={selectGuideStep}
+            onCopy={clipboard.copy}
+            copyFeedback={clipboard.feedback}
             onClose={() => setGuideOpen(false)}
           />
         )}
@@ -60,6 +72,7 @@ function App() {
               type="button"
               className={tab === "terminal" ? "active" : ""}
               onClick={() => switchTab("terminal")}
+              aria-pressed={tab === "terminal"}
             >
               <TerminalSquare size={17} />
               Terminal
@@ -68,6 +81,7 @@ function App() {
               type="button"
               className={tab === "files" ? "active" : ""}
               onClick={() => switchTab("files")}
+              aria-pressed={tab === "files"}
             >
               <FileText size={17} />
               Files

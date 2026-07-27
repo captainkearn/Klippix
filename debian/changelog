@@ -1,3 +1,14 @@
+klippix (0.510~beta2) unstable; urgency=medium
+
+  * Replace placeholder host, account, progress, and health claims with
+    runtime-derived or explicitly scoped labels.
+  * Make preview file upload, editing, filtering, and feedback behave
+    consistently.
+  * Harden package discovery and release-version handling.
+  * Add guide-data and release-label invariants.
+
+ -- Klippix Maintainers <maintainers@klippix.org>  Sun, 26 Jul 2026 18:47:38 -0600
+
 klippix (0.510~beta1) unstable; urgency=medium
 
   * Publish the .510 BETA package.

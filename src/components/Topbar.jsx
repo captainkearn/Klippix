@@ -1,7 +1,9 @@
-import { ChevronDown, UserRound } from "lucide-react";
+import { Server, UserRound } from "lucide-react";
 import { BrandMark } from "./Brand";
 
 export function Topbar() {
+  const hostname = window.location.hostname || "localhost";
+
   return (
     <header className="topbar">
       <div className="brand">
@@ -9,17 +11,16 @@ export function Topbar() {
         <span>Klippix</span>
       </div>
       <div className="topbar-divider" />
-      <span className="hostname">voron-workshop</span>
+      <span className="hostname">{hostname}</span>
       <div className="topbar-divider compact-hide" />
-      <span className="connection compact-hide">
-        <i />
-        Connected
+      <span className="runtime-context compact-hide">
+        <Server size={15} />
+        Host workspace
       </span>
-      <button className="user-menu" type="button" aria-label="Open user menu">
+      <span className="user-context">
         <UserRound size={18} />
-        <span>maker</span>
-        <ChevronDown size={15} />
-      </button>
+        Local login
+      </span>
     </header>
   );
 }

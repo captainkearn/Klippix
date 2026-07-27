@@ -13,7 +13,7 @@ current beta contains the first interactive GUI and package installer:
 
 - A guided KIAUH installation checklist
 - An authenticated browser terminal backed by a local `/bin/login` session
-- A printer configuration file manager and editor
+- An in-browser preview of a printer configuration file manager and editor
 - Responsive desktop and mobile layouts
 
 The packaged terminal connects to the LAN-only ttyd service. The filesystem
@@ -74,7 +74,7 @@ scripts/build-deb.sh armhf
 Install a local build on a supported Debian-family host:
 
 ```bash
-sudo installer/install.sh --deb 'artifacts/klippix_0.510~beta1_amd64.deb'
+sudo installer/install.sh --deb 'artifacts/klippix_0.510~beta2_amd64.deb'
 ```
 
 Use the package matching `dpkg --print-architecture`: `amd64` for x86-64,

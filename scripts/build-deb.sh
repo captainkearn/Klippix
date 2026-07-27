@@ -3,13 +3,6 @@ set -eu
 
 PROJECT_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 TARGET_ARCH="${1:-}"
-PACKAGE_VERSION=$(sed -n '1s/^[^(]*(\([^)]*\)).*/\1/p' \
-    "$PROJECT_ROOT/debian/changelog")
-
-if [ -z "$PACKAGE_VERSION" ]; then
-    echo "Cannot read the package version from debian/changelog." >&2
-    exit 1
-fi
 
 if [ -z "$TARGET_ARCH" ]; then
     case "$(uname -m)" in
@@ -57,7 +50,9 @@ podman run --rm \
     "$BUILDER_IMAGE" \
     sh -ec "
         dpkg-buildpackage --build=binary --no-sign --host-arch=${TARGET_ARCH}
-        lintian --fail-on error /klippix_${PACKAGE_VERSION}_${TARGET_ARCH}.changes
+        package_version=\$(dpkg-parsechangelog --show-field Version)
+        lintian --fail-on error \
+            \"/klippix_\${package_version}_${TARGET_ARCH}.changes\"
         cp /klippix_*_${TARGET_ARCH}.deb /src/artifacts/
         cp /klippix_*_${TARGET_ARCH}.buildinfo /src/artifacts/ 2>/dev/null || true
         cp /klippix_*_${TARGET_ARCH}.changes /src/artifacts/ 2>/dev/null || true

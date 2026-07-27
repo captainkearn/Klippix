@@ -20,6 +20,37 @@ Options:
 EOF
 }
 
+select_newest_package() {
+    selected_path=
+    selected_version=
+
+    for candidate in "$@"; do
+        [ -f "$candidate" ] || continue
+        candidate_version=$(dpkg-deb --field "$candidate" Version)
+
+        if [ -z "$selected_version" ] ||
+            dpkg --compare-versions "$candidate_version" gt "$selected_version"
+        then
+            selected_path=$candidate
+            selected_version=$candidate_version
+        fi
+    done
+
+    printf '%s\n' "$selected_path"
+}
+
+cleanup() {
+    if [ -n "$TEMP_DIRECTORY" ] && [ "$KEEP_DOWNLOAD" -eq 0 ]; then
+        find "$TEMP_DIRECTORY" -type f -delete
+        rmdir "$TEMP_DIRECTORY"
+    fi
+}
+
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 while [ "$#" -gt 0 ]; do
     case "$1" in
         --deb)
@@ -94,15 +125,9 @@ esac
 
 if [ -z "$PACKAGE_PATH" ] && [ -z "$PACKAGE_URL" ]; then
     script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-    for candidate in \
+    PACKAGE_PATH=$(select_newest_package \
         "$script_directory/../artifacts/klippix_"*"_${architecture}.deb" \
-        "$script_directory/klippix_"*"_${architecture}.deb"
-    do
-        if [ -f "$candidate" ]; then
-            PACKAGE_PATH=$candidate
-            break
-        fi
-    done
+        "$script_directory/klippix_"*"_${architecture}.deb")
 fi
 
 if [ -n "$PACKAGE_URL" ]; then
@@ -193,8 +218,3 @@ echo "Web username: klippix"
 echo "Initial password: /etc/klippix/initial-password"
 echo "Show it with: sudo cat /etc/klippix/initial-password"
 echo "Reset it with: sudo klippix-reset-password"
-
-if [ -n "$TEMP_DIRECTORY" ] && [ "$KEEP_DOWNLOAD" -eq 0 ]; then
-    find "$TEMP_DIRECTORY" -type f -delete
-    rmdir "$TEMP_DIRECTORY"
-fi
